@@ -364,6 +364,43 @@
       min-height: 0;
     }
 
+    .faq-list--overview {
+      gap: 4px;
+    }
+
+    .faq-overview-link {
+      display: block;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-main);
+      text-align: left;
+      text-decoration: none;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .faq-overview-link:hover {
+      background: rgba(30, 41, 59, 0.98);
+      border-color: rgba(71, 85, 105, 0.8);
+    }
+
+    .faq-overview-link .faq-overview-cat {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .faq-overview-link .faq-overview-q {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
     .faq-item {
       border-radius: 14px;
       border: 1px solid var(--border-subtle);
@@ -670,22 +707,27 @@
     const emptyStateEl = document.getElementById("emptyState");
     const emptySearchTermEl = document.getElementById("emptySearchTerm");
 
-    let activeSectionId = data[0] ? data[0].id : "";
+    const allCount = data.reduce((acc, s) => acc + s.questions.length, 0);
+    let activeSectionId = "all";
     let lastSearch = "";
+    let openQuestionIdAfterRender = null;
 
     function createSectionItems() {
       const fragment = document.createDocumentFragment();
-
-      data.forEach((section, index) => {
+      const navSections = [
+        { id: "all", name: "Overzicht", tagline: "Alle vragen in één lijst", count: allCount },
+        ...data.map((s) => ({ id: s.id, name: s.name, tagline: s.tagline, count: s.questions.length }))
+      ];
+      navSections.forEach((nav, index) => {
         const li = document.createElement("li");
         li.className = index === 0 ? "section-item active" : "section-item";
-        li.dataset.sectionId = section.id;
+        li.dataset.sectionId = nav.id;
         li.innerHTML = `
           <div class="section-label">
-            <span class="section-name">${section.name}</span>
-            <span class="section-tagline">${section.tagline}</span>
+            <span class="section-name">${nav.name}</span>
+            <span class="section-tagline">${nav.tagline}</span>
           </div>
-          <span class="section-count">${section.questions.length}</span>
+          <span class="section-count">${nav.count}</span>
         `;
         fragment.appendChild(li);
       });
@@ -708,19 +750,24 @@
       document.querySelectorAll(".section-item").forEach((el) => {
         el.classList.toggle("active", el.dataset.sectionId === activeSectionId);
       });
-      const label = data.find((s) => s.id === activeSectionId)?.name || "";
+      const label = activeSectionId === "all" ? "Overzicht" : (data.find((s) => s.id === activeSectionId)?.name || "");
       activeSectionLabelEl.textContent = label;
     }
 
     function getFilteredQuestions() {
       const query = lastSearch.trim().toLowerCase();
 
-      const sec = data.find((s) => s.id === activeSectionId);
-      const questions = !sec ? [] : sec.questions.map((q) => ({ section: sec, q }));
-
-      if (!query) {
-        return questions;
+      let questions = [];
+      if (activeSectionId === "all") {
+        data.forEach((section) => {
+          section.questions.forEach((q) => questions.push({ section, q }));
+        });
+      } else {
+        const sec = data.find((s) => s.id === activeSectionId);
+        if (sec) questions = sec.questions.map((q) => ({ section: sec, q }));
       }
+
+      if (!query) return questions;
 
       return questions.filter(({ q }) => {
         const text = `${q.question} ${(q.answer || "").replace(/<[^>]+>/g, " ")} ${(q.tags || []).join(" ")}`.toLowerCase();
@@ -740,6 +787,7 @@
       const items = getFilteredQuestions();
 
       faqListEl.innerHTML = "";
+      faqListEl.classList.remove("faq-list--overview");
 
       if (items.length === 0) {
         emptyStateEl.style.display = "block";
@@ -752,87 +800,151 @@
 
       const fragment = document.createDocumentFragment();
 
-      items.forEach(({ section, q }) => {
-        const li = document.createElement("li");
-        li.className = "faq-item";
-        li.dataset.questionId = q.id;
-
-        const questionHtml = query ? highlightSearch(q.question, query) : q.question;
-
-        li.innerHTML = `
-          <button class="faq-question-btn" type="button" aria-expanded="false">
-            <div class="faq-q-main">
-              <div class="faq-q-title">${questionHtml}</div>
-              <div class="faq-q-meta">
-                <span>${section.name}</span>
-                ${q.tags && q.tags.length ? `<span>• ${q.tags.join(", ")}</span>` : ""}
+      if (activeSectionId === "all") {
+        faqListEl.classList.add("faq-list--overview");
+        items.forEach(({ section, q }) => {
+          const li = document.createElement("li");
+          const questionHtml = query ? highlightSearch(q.question, query) : q.question;
+          li.innerHTML = `
+            <a href="#" class="faq-overview-link" data-section-id="${section.id}" data-question-id="${q.id}" role="button">
+              <span class="faq-overview-cat">${section.name}</span>
+              <span class="faq-overview-q">${questionHtml}</span>
+            </a>
+          `;
+          li.querySelector(".faq-overview-link").addEventListener("click", (e) => {
+            e.preventDefault();
+            activeSectionId = section.id;
+            openQuestionIdAfterRender = q.id;
+            updateSectionActiveState();
+            renderFaq();
+          });
+          fragment.appendChild(li);
+        });
+      } else {
+        items.forEach(({ section, q }) => {
+          const li = document.createElement("li");
+          li.className = "faq-item";
+          li.dataset.questionId = q.id;
+          const questionHtml = query ? highlightSearch(q.question, query) : q.question;
+          li.innerHTML = `
+            <button class="faq-question-btn" type="button" aria-expanded="false">
+              <div class="faq-q-main">
+                <div class="faq-q-title">${questionHtml}</div>
+                <div class="faq-q-meta">
+                  <span>${section.name}</span>
+                  ${q.tags && q.tags.length ? `<span>• ${q.tags.join(", ")}</span>` : ""}
+                </div>
+              </div>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                ${q.answer}
               </div>
             </div>
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              ${q.answer}
-            </div>
-          </div>
-        `;
+          `;
+          fragment.appendChild(li);
+        });
 
-        fragment.appendChild(li);
-      });
+        faqListEl.appendChild(fragment);
 
-      faqListEl.appendChild(fragment);
+        document.querySelectorAll(".faq-question-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const item = btn.closest(".faq-item");
+            const answer = item.querySelector(".faq-answer");
+            const isOpen = item.classList.contains("open");
 
-      document.querySelectorAll(".faq-question-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const item = btn.closest(".faq-item");
-          const answer = item.querySelector(".faq-answer");
-          const isOpen = item.classList.contains("open");
+            document.querySelectorAll(".faq-item").forEach((other) => {
+              if (other !== item) {
+                other.classList.remove("open");
+                other.classList.remove("highlight");
+                const ans = other.querySelector(".faq-answer");
+                if (ans) {
+                  ans.style.maxHeight = 0;
+                  ans.style.overflowY = "";
+                }
+                const b = other.querySelector(".faq-question-btn");
+                if (b) b.setAttribute("aria-expanded", "false");
+                const icon = other.querySelector(".faq-icon");
+                if (icon) icon.textContent = "+";
+              }
+            });
 
-          document.querySelectorAll(".faq-item").forEach((other) => {
-            if (other !== item) {
-              other.classList.remove("open");
-              other.classList.remove("highlight");
-              const ans = other.querySelector(".faq-answer");
-              if (ans) ans.style.maxHeight = 0;
-              const b = other.querySelector(".faq-question-btn");
-              if (b) b.setAttribute("aria-expanded", "false");
-              const icon = other.querySelector(".faq-icon");
+            if (!isOpen) {
+              item.classList.add("open");
+              item.classList.add("highlight");
+              const useScrollable = item.classList.contains("faq-item--scrollable");
+              if (useScrollable) {
+                answer.style.maxHeight = "min(65vh, 520px)";
+                answer.style.overflowY = "auto";
+              } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+              }
+              btn.setAttribute("aria-expanded", "true");
+              const icon = item.querySelector(".faq-icon");
+              if (icon) icon.textContent = "–";
+              requestAnimationFrame(() => {
+                item.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+              });
+            } else {
+              item.classList.remove("open");
+              item.classList.remove("highlight");
+              answer.style.maxHeight = 0;
+              answer.style.overflowY = "";
+              btn.setAttribute("aria-expanded", "false");
+              const icon = item.querySelector(".faq-icon");
               if (icon) icon.textContent = "+";
             }
           });
+        });
 
-          if (!isOpen) {
-            item.classList.add("open");
-            item.classList.add("highlight");
-            answer.style.maxHeight = answer.scrollHeight + "px";
-            btn.setAttribute("aria-expanded", "true");
-            const icon = item.querySelector(".faq-icon");
+        if (openQuestionIdAfterRender) {
+          const target = faqListEl.querySelector(".faq-item[data-question-id=\"" + openQuestionIdAfterRender + "\"]");
+          if (target) {
+            const ans = target.querySelector(".faq-answer");
+            const btn = target.querySelector(".faq-question-btn");
+            const icon = target.querySelector(".faq-icon");
+            target.classList.add("open", "highlight");
+            if (ans) {
+              const useScrollable = target.classList.contains("faq-item--scrollable");
+              if (useScrollable) {
+                ans.style.maxHeight = "min(65vh, 520px)";
+                ans.style.overflowY = "auto";
+              } else {
+                ans.style.maxHeight = ans.scrollHeight + "px";
+              }
+            }
+            if (btn) btn.setAttribute("aria-expanded", "true");
             if (icon) icon.textContent = "–";
             requestAnimationFrame(() => {
-              item.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
             });
-          } else {
-            item.classList.remove("open");
-            item.classList.remove("highlight");
-            answer.style.maxHeight = 0;
-            btn.setAttribute("aria-expanded", "false");
-            const icon = item.querySelector(".faq-icon");
-            if (icon) icon.textContent = "+";
           }
-        });
-      });
-
-      if (items.length === 1) {
-        const only = faqListEl.querySelector(".faq-item");
-        if (only) {
-          only.classList.add("open", "highlight");
-          const ans = only.querySelector(".faq-answer");
-          if (ans) ans.style.maxHeight = ans.scrollHeight + "px";
-          const btn = only.querySelector(".faq-question-btn");
-          if (btn) btn.setAttribute("aria-expanded", "true");
-          const icon = only.querySelector(".faq-icon");
-          if (icon) icon.textContent = "–";
+          openQuestionIdAfterRender = null;
+        } else if (items.length === 1) {
+          const only = faqListEl.querySelector(".faq-item");
+          if (only) {
+            only.classList.add("open", "highlight");
+            const ans = only.querySelector(".faq-answer");
+            if (ans) {
+              const useScrollable = only.classList.contains("faq-item--scrollable");
+              if (useScrollable) {
+                ans.style.maxHeight = "min(65vh, 520px)";
+                ans.style.overflowY = "auto";
+              } else {
+                ans.style.maxHeight = ans.scrollHeight + "px";
+              }
+            }
+            const btn = only.querySelector(".faq-question-btn");
+            if (btn) btn.setAttribute("aria-expanded", "true");
+            const icon = only.querySelector(".faq-icon");
+            if (icon) icon.textContent = "–";
+          }
         }
+      }
+
+      if (activeSectionId === "all") {
+        faqListEl.appendChild(fragment);
       }
     }
 
