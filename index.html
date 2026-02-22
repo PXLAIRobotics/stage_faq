@@ -351,6 +351,32 @@
       display: inline-block;
     }
 
+    .faq-badge-updated {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+    }
+
+    .faq-overview-link .faq-badge-updated {
+      margin-left: 0;
+      margin-top: 6px;
+    }
+
+    .faq-badge-updated--sidebar {
+      font-size: 0.62rem;
+      padding: 1px 6px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
     .faq-list {
       margin: 0;
       padding: 0;
@@ -699,6 +725,15 @@
   <script>
     const data = typeof FAQ_DATA !== "undefined" ? FAQ_DATA : [];
 
+    /**
+     * RECENT GEWIJZIGDE INHOUD – studenten zien een "Bijgewerkt" badge bij deze vragen.
+     * Als je in faq-data.js een antwoord of vraag aanpast, voeg dan het vraag-id hier toe
+     * (en eventueel weer verwijderen na een tijdje). Vraag-ids staan in faq-data.js per question (id: "...").
+     */
+    const RECENTLY_UPDATED_QUESTION_IDS = [
+      "uren-per-student"
+    ];
+
     const sectionListEl = document.getElementById("sectionList");
     const faqListEl = document.getElementById("faqList");
     const searchInputEl = document.getElementById("searchInput");
@@ -714,17 +749,19 @@
 
     function createSectionItems() {
       const fragment = document.createDocumentFragment();
+      const hasUpdatedInSection = (section) => section.questions.some((q) => RECENTLY_UPDATED_QUESTION_IDS.includes(q.id));
       const navSections = [
-        { id: "all", name: "Overzicht", tagline: "Alle vragen in één lijst", count: allCount },
-        ...data.map((s) => ({ id: s.id, name: s.name, tagline: s.tagline, count: s.questions.length }))
+        { id: "all", name: "Overzicht", tagline: "Alle vragen in één lijst", count: allCount, hasUpdated: data.some((s) => hasUpdatedInSection(s)) },
+        ...data.map((s) => ({ id: s.id, name: s.name, tagline: s.tagline, count: s.questions.length, hasUpdated: hasUpdatedInSection(s) }))
       ];
       navSections.forEach((nav, index) => {
         const li = document.createElement("li");
         li.className = index === 0 ? "section-item active" : "section-item";
         li.dataset.sectionId = nav.id;
+        const updatedBadge = nav.hasUpdated ? '<span class="faq-badge-updated faq-badge-updated--sidebar">Bijgewerkt</span>' : '';
         li.innerHTML = `
           <div class="section-label">
-            <span class="section-name">${nav.name}</span>
+            <span class="section-name">${nav.name} ${updatedBadge}</span>
             <span class="section-tagline">${nav.tagline}</span>
           </div>
           <span class="section-count">${nav.count}</span>
@@ -805,10 +842,12 @@
         items.forEach(({ section, q }) => {
           const li = document.createElement("li");
           const questionHtml = query ? highlightSearch(q.question, query) : q.question;
+          const updatedBadge = RECENTLY_UPDATED_QUESTION_IDS.includes(q.id) ? '<span class="faq-badge-updated">Bijgewerkt</span>' : '';
           li.innerHTML = `
             <a href="#" class="faq-overview-link" data-section-id="${section.id}" data-question-id="${q.id}" role="button">
               <span class="faq-overview-cat">${section.name}</span>
               <span class="faq-overview-q">${questionHtml}</span>
+              ${updatedBadge}
             </a>
           `;
           li.querySelector(".faq-overview-link").addEventListener("click", (e) => {
@@ -826,10 +865,11 @@
           li.className = "faq-item";
           li.dataset.questionId = q.id;
           const questionHtml = query ? highlightSearch(q.question, query) : q.question;
+          const updatedBadge = RECENTLY_UPDATED_QUESTION_IDS.includes(q.id) ? '<span class="faq-badge-updated">Bijgewerkt</span>' : '';
           li.innerHTML = `
             <button class="faq-question-btn" type="button" aria-expanded="false">
               <div class="faq-q-main">
-                <div class="faq-q-title">${questionHtml}</div>
+                <div class="faq-q-title">${questionHtml} ${updatedBadge}</div>
                 <div class="faq-q-meta">
                   <span>${section.name}</span>
                   ${q.tags && q.tags.length ? `<span>• ${q.tags.join(", ")}</span>` : ""}
