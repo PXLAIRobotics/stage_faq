@@ -365,8 +365,8 @@ const FAQ_DATA = [
         tags: ["tijd", "uren", "begeleiding"],
         answer: `
               <p>In de onderwijsopdracht krijg ik ongeveer <strong>1,7% per stagestudent</strong>, wat neerkomt op zo'n <strong>25 uur per student</strong> voor de hele stageperiode.</p>
-              <p>Ruw vertaald is dat ongeveer <strong>2 uur per week</strong>, al zullen er drukkere en rustigere weken zijn.</p>
-              <p>Je kiest zelf <strong>hoe je die tijd zo optimaal mogelijk inzet</strong> (vragen, feedback, overlegmomenten, …).</p>
+              <p>Die 25 uur dekken <strong>alles</strong>: jurypresentaties, portfolios en eindwerken nalezen, overleg met jou, enz. Dit betekent dat ik niet oneindig veel tijd heb.
+              Gebruik de beschikbare tijd dus <strong>doelgericht</strong>: stel je vragen op de juiste momenten en bereid overleg goed voor.</p>
             `
       }
     ]
