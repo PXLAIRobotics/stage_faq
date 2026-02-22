@@ -8,8 +8,9 @@ Dubbelklik op `index.html` of open het bestand in je browser. Geen server nodig.
 
 ## Inhoud wijzigen
 
-**Alle teksten staan in één bestand:** `faq-data.js`. Daar wijzig je vragen, antwoorden en categorieën; `index.html` hoef je niet aan te raken.
+**Alle teksten staan in één bestand:** `faq-data.js`. Daar wijzig je vragen, antwoorden en categorieën.
 
+- **Na een wijziging in faq-data.js:** pas in `index.html` de versie in de script-tag aan, bv. `faq-data.js?v=2` → `faq-data.js?v=3`. Zo laden bezoekers en GitHub Pages de nieuwe inhoud i.p.v. een gecachte versie.
 - **Sectie toevoegen:** kopieer een bestaand blok `{ id: "...", name: "...", tagline: "...", questions: [ ... ] }` en pas het aan.
 - **Vraag toevoegen:** voeg binnen de juiste sectie een nieuw object toe met `id`, `question`, `tags` (array) en `answer` (HTML tussen backticks).
 - **Tekst aanpassen:** pas de `question`- of `answer`-tekst aan; in `answer` mag je o.a. `<p>`, `<ul>`, `<li>`, `<strong>`, `<span class="highlight-text">` gebruiken.
