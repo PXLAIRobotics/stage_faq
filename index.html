@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stage & Eindwerk FAQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --bg-elevated: #020617;
+      --bg-soft: #111827;
+      --border-subtle: #1f2937;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.12);
+      --accent-strong: rgba(59, 130, 246, 0.25);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-muted: #6b7280;
+      --danger: #ef4444;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, sans-serif;
+      background:
+        radial-gradient(circle at top left, #1d4ed8 0, transparent 55%),
+        radial-gradient(circle at bottom right, #7c3aed 0, transparent 55%),
+        var(--bg);
+      color: var(--text-main);
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1120px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.92));
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      backdrop-filter: blur(24px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 900px;
+    }
+
+    .shell-header {
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.36), transparent 55%);
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    .dot:nth-child(2) { background: #fbbf24; }
+    .dot:nth-child(3) { background: #22c55e; }
+
+    .shell-header-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-pill {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.25);
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      max-width: 520px;
+    }
+
+    .meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .meta strong {
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
+      gap: 0;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.94));
+      border-right: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 18px 18px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 34px 9px 30px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.96));
+      color: var(--text-main);
+      font-size: 0.84rem;
+      outline: none;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .search-kbd {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      padding: 1px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .sidebar-section-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .section-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .section-item {
+      border-radius: 10px;
+      padding: 8px 9px;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.08s ease;
+    }
+
+    .section-item:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(55, 65, 81, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .section-item.active {
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.98));
+      border-color: rgba(59, 130, 246, 0.8);
+      color: var(--text-main);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    .section-label {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .section-name {
+      font-weight: 500;
+    }
+
+    .section-tagline {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .section-count {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      padding: 1px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .sidebar-note {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      border-radius: 12px;
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      padding: 8px 9px;
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .sidebar-note strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .main {
+      padding: 18px 20px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .pill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.96);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .filter-badge {
+      font-size: 0.7rem;
+      color: var(--accent);
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(59, 130, 246, 0.9);
+    }
+
+    .results-info {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 1px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.96);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+      margin-right: 4px;
+      display: inline-block;
+    }
+
+    .faq-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: auto;
+      padding-right: 4px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .faq-item {
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.96);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.8);
+      overflow: hidden;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .faq-item.highlight {
+      border-color: rgba(59, 130, 246, 0.85);
+      box-shadow: 0 0 0 1px var(--accent-soft), 0 16px 40px rgba(15, 23, 42, 0.9);
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), rgba(15, 23, 42, 0.96));
+    }
+
+    .faq-question-btn {
+      width: 100%;
+      padding: 10px 14px;
+      border: none;
+      background: none;
+      color: inherit;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .faq-q-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .faq-q-title {
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .faq-q-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.96);
+      margin-top: 2px;
+    }
+
+    .faq-item.open .faq-icon {
+      border-color: rgba(59, 130, 246, 0.8);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.18s ease-out, opacity 0.18s ease-out;
+      opacity: 0;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+    }
+
+    .faq-item.open .faq-answer {
+      opacity: 1;
+    }
+
+    .faq-answer-inner {
+      padding: 9px 14px 12px;
+      font-size: 0.84rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .faq-answer-inner h4 {
+      margin: 0 0 4px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .faq-answer-inner p {
+      margin: 0;
+    }
+
+    .faq-answer-inner ul {
+      margin: 0 0 0 16px;
+      padding: 0;
+    }
+
+    .faq-answer-inner li {
+      margin-bottom: 3px;
+    }
+
+    .highlight-text {
+      background: rgba(250, 204, 21, 0.2);
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+
+    .pill-important {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.6);
+      background: rgba(127, 29, 29, 0.35);
+    }
+
+    .pill-link {
+      color: var(--accent);
+      border-color: rgba(59, 130, 246, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .empty-state {
+      border-radius: 14px;
+      border: 1px dashed rgba(55, 65, 81, 0.95);
+      background: rgba(15, 23, 42, 0.96);
+      padding: 14px 14px 12px;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      display: none;
+    }
+
+    .empty-state span {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .footer {
+      padding: 8px 18px 12px;
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.25), rgba(15, 23, 42, 0.98));
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    @media (max-width: 880px) {
+      .content {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+        padding-bottom: 14px;
+      }
+      .main {
+        padding-top: 12px;
+      }
+      body {
+        padding: 18px 10px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .shell {
+        max-height: none;
+      }
+      .shell-header {
+        padding: 16px 16px 10px;
+      }
+      .sidebar {
+        padding: 14px 14px 14px 16px;
+      }
+      .main {
+        padding: 14px 14px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" role="application" aria-label="Stage en eindwerk FAQ">
+    <header class="shell-header">
+      <div class="window-controls" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <div class="shell-header-main">
+        <div class="title-block">
+          <div class="title">
+            Stage & Eindwerk – FAQ
+            <span class="title-pill">
+              <span class="title-pill-dot"></span>
+              INTERACTIEVE GIDS
+            </span>
+          </div>
+          <p class="subtitle">
+            Alle praktische info uit het lange stage‑mailtje, nu gebundeld in een snelle, doorzoekbare FAQ.
+          </p>
+        </div>
+        <div class="meta">
+          <div><strong>Hogeschoolpromotor</strong> Sam Van Rijn</div>
+          <div>Stages & eindwerken TI – sem. 2</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <aside class="sidebar">
+        <div class="search-wrapper">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            id="searchInput"
+            type="search"
+            class="search-input"
+            placeholder="Zoek op trefwoord (bvb. portfolio, taalversie, deadlines)…"
+            autocomplete="off"
+          />
+          <span class="search-kbd" aria-hidden="true">Ctrl+K</span>
+        </div>
+
+        <div>
+          <div class="sidebar-section-title">Categorieën</div>
+          <ul id="sectionList" class="section-list" aria-label="FAQ categorieën"></ul>
+        </div>
+
+        <div class="sidebar-note">
+          <strong>Tip</strong><br />
+          Typ een trefwoord (bvb. <em>AI</em>, <em>taalversie</em> of <em>stagebezoek</em>) of klik een categorie aan.
+          Klik op een vraag om het antwoord open te klappen.
+        </div>
+      </aside>
+
+      <main class="main" aria-live="polite">
+        <div class="pill-row">
+          <div class="filter-pill">
+            <span id="activeSectionLabel"></span>
+          </div>
+          <div class="results-info">
+            <div class="badge">
+              <span class="badge-dot"></span>
+              <span id="resultCountLabel"></span>
+            </div>
+          </div>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          Geen resultaten voor <span id="emptySearchTerm"></span> in deze categorie.
+          <br />Probeer een ander trefwoord of kies een andere categorie.
+        </div>
+
+        <ul id="faqList" class="faq-list"></ul>
+      </main>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <strong>Vraag nog niet beantwoord?</strong> Stuur gerust een bericht via Teams of mail.
+      </div>
+      <div>
+        Laatste update: geautomatiseerde samenvatting van de oorspronkelijke stage‑mail.
+      </div>
+    </footer>
+  </div>
+
+  <script src="faq-data.js"></script>
+  <script>
+    const data = typeof FAQ_DATA !== "undefined" ? FAQ_DATA : [];
+
+    const sectionListEl = document.getElementById("sectionList");
+    const faqListEl = document.getElementById("faqList");
+    const searchInputEl = document.getElementById("searchInput");
+    const activeSectionLabelEl = document.getElementById("activeSectionLabel");
+    const resultCountLabelEl = document.getElementById("resultCountLabel");
+    const emptyStateEl = document.getElementById("emptyState");
+    const emptySearchTermEl = document.getElementById("emptySearchTerm");
+
+    let activeSectionId = data[0] ? data[0].id : "";
+    let lastSearch = "";
+
+    function createSectionItems() {
+      const fragment = document.createDocumentFragment();
+
+      data.forEach((section, index) => {
+        const li = document.createElement("li");
+        li.className = index === 0 ? "section-item active" : "section-item";
+        li.dataset.sectionId = section.id;
+        li.innerHTML = `
+          <div class="section-label">
+            <span class="section-name">${section.name}</span>
+            <span class="section-tagline">${section.tagline}</span>
+          </div>
+          <span class="section-count">${section.questions.length}</span>
+        `;
+        fragment.appendChild(li);
+      });
+
+      sectionListEl.appendChild(fragment);
+      updateSectionActiveState();
+
+      sectionListEl.addEventListener("click", (e) => {
+        const item = e.target.closest(".section-item");
+        if (!item) return;
+        const id = item.dataset.sectionId;
+        if (!id || id === activeSectionId) return;
+        activeSectionId = id;
+        updateSectionActiveState();
+        renderFaq();
+      });
+    }
+
+    function updateSectionActiveState() {
+      document.querySelectorAll(".section-item").forEach((el) => {
+        el.classList.toggle("active", el.dataset.sectionId === activeSectionId);
+      });
+      const label = data.find((s) => s.id === activeSectionId)?.name || "";
+      activeSectionLabelEl.textContent = label;
+    }
+
+    function getFilteredQuestions() {
+      const query = lastSearch.trim().toLowerCase();
+
+      const sec = data.find((s) => s.id === activeSectionId);
+      const questions = !sec ? [] : sec.questions.map((q) => ({ section: sec, q }));
+
+      if (!query) {
+        return questions;
+      }
+
+      return questions.filter(({ q }) => {
+        const text = `${q.question} ${(q.answer || "").replace(/<[^>]+>/g, " ")} ${(q.tags || []).join(" ")}`.toLowerCase();
+        return text.includes(query);
+      });
+    }
+
+    function highlightSearch(text, query) {
+      if (!query) return text;
+      const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`(${safeQuery})`, "gi");
+      return text.replace(regex, "<span class=\"highlight-text\">$1</span>");
+    }
+
+    function renderFaq() {
+      const query = lastSearch.trim();
+      const items = getFilteredQuestions();
+
+      faqListEl.innerHTML = "";
+
+      if (items.length === 0) {
+        emptyStateEl.style.display = "block";
+        emptySearchTermEl.textContent = query ? `"${query}"` : "deze filters";
+      } else {
+        emptyStateEl.style.display = "none";
+      }
+
+      resultCountLabelEl.textContent = `${items.length} vrag${items.length === 1 ? "" : "en"} gevonden`;
+
+      const fragment = document.createDocumentFragment();
+
+      items.forEach(({ section, q }) => {
+        const li = document.createElement("li");
+        li.className = "faq-item";
+        li.dataset.questionId = q.id;
+
+        const questionHtml = query ? highlightSearch(q.question, query) : q.question;
+
+        li.innerHTML = `
+          <button class="faq-question-btn" type="button" aria-expanded="false">
+            <div class="faq-q-main">
+              <div class="faq-q-title">${questionHtml}</div>
+              <div class="faq-q-meta">
+                <span>${section.name}</span>
+                ${q.tags && q.tags.length ? `<span>• ${q.tags.join(", ")}</span>` : ""}
+              </div>
+            </div>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              ${q.answer}
+            </div>
+          </div>
+        `;
+
+        fragment.appendChild(li);
+      });
+
+      faqListEl.appendChild(fragment);
+
+      document.querySelectorAll(".faq-question-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.closest(".faq-item");
+          const answer = item.querySelector(".faq-answer");
+          const isOpen = item.classList.contains("open");
+
+          document.querySelectorAll(".faq-item").forEach((other) => {
+            if (other !== item) {
+              other.classList.remove("open");
+              other.classList.remove("highlight");
+              const ans = other.querySelector(".faq-answer");
+              if (ans) ans.style.maxHeight = 0;
+              const b = other.querySelector(".faq-question-btn");
+              if (b) b.setAttribute("aria-expanded", "false");
+              const icon = other.querySelector(".faq-icon");
+              if (icon) icon.textContent = "+";
+            }
+          });
+
+          if (!isOpen) {
+            item.classList.add("open");
+            item.classList.add("highlight");
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            btn.setAttribute("aria-expanded", "true");
+            const icon = item.querySelector(".faq-icon");
+            if (icon) icon.textContent = "–";
+            requestAnimationFrame(() => {
+              item.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+            });
+          } else {
+            item.classList.remove("open");
+            item.classList.remove("highlight");
+            answer.style.maxHeight = 0;
+            btn.setAttribute("aria-expanded", "false");
+            const icon = item.querySelector(".faq-icon");
+            if (icon) icon.textContent = "+";
+          }
+        });
+      });
+
+      if (items.length === 1) {
+        const only = faqListEl.querySelector(".faq-item");
+        if (only) {
+          only.classList.add("open", "highlight");
+          const ans = only.querySelector(".faq-answer");
+          if (ans) ans.style.maxHeight = ans.scrollHeight + "px";
+          const btn = only.querySelector(".faq-question-btn");
+          if (btn) btn.setAttribute("aria-expanded", "true");
+          const icon = only.querySelector(".faq-icon");
+          if (icon) icon.textContent = "–";
+        }
+      }
+    }
+
+    searchInputEl.addEventListener("input", (e) => {
+      lastSearch = e.target.value;
+      renderFaq();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInputEl.focus();
+        searchInputEl.select();
+      }
+    });
+
+    createSectionItems();
+    renderFaq();
+  </script>
+</body>
+</html>
+
