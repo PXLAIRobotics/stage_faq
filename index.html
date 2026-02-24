@@ -53,7 +53,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      max-height: 900px;
+      max-height: min(95vh, 1100px);
     }
 
     .shell-header {
@@ -159,6 +159,21 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      min-height: 0;
+    }
+
+    .sidebar > div:nth-child(2) {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar .section-list {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
     }
 
     .search-wrapper {
@@ -733,7 +748,8 @@
      */
     const RECENTLY_UPDATED_QUESTION_IDS = [
       "uren-per-student",
-      "eindwerk-engels"
+      "eindwerk-engels",
+      "hoeveel-stagebezoeken"
     ];
 
     const sectionListEl = document.getElementById("sectionList");

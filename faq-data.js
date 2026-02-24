@@ -310,6 +310,7 @@ const FAQ_DATA = [
                 <li>Bezoek 2: op het einde, rond <strong>week 11–12</strong>.</li>
               </ul>
               <p>Tijdens deze gesprekken zitten we samen met jou en de bedrijfspromotor om te bespreken hoe de stage verloopt. Ik bekijk per geval of dit <strong>online of fysiek</strong> gebeurt.</p>
+              <p><strong>Belangrijk:</strong> jij neemt zelf <strong>initiatief</strong> om deze stagebezoeken in te plannen (in overleg met je bedrijfspromotor en met mij). Wacht dus niet passief af tot ik iets voorstel, maar prik zelf tijdstippen die voor iedereen haalbaar zijn.</p>
             `
       }
     ]
