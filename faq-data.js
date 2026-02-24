@@ -414,7 +414,7 @@ const FAQ_DATA = [
               <p>Ja, je kan je eindwerk in het Engels schrijven, maar daarvoor moet je een aantal zaken in orde brengen:</p>
               <ul>
                 <li><strong>Overleg</strong> met je hogeschoolpromotor (ik) en je bedrijfspromotor; beiden moeten akkoord zijn.</li>
-                <li>Vraag vervolgens <strong>toestemming aan het departementshoofd</strong> met een kort mailtje waarin je:</li>
+                <li>Vraag vervolgens <strong>toestemming aan het opleidingshoofd (Joeri Gerrits)</strong> met een kort mailtje waarin je:</li>
                 <ul>
                   <li>vermeld waar je je stage loopt (en eventueel het onderwerp),</li>
                   <li>je hogeschoolpromotor vermeldt,</li>
