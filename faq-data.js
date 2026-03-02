@@ -228,6 +228,7 @@ const FAQ_DATA = [
               <p>De projectomschrijving is een <strong>ingekorte versie</strong> van je bachelorproef en eindwerk, waarin je de <strong>essentie</strong> bondig beschrijft.</p>
               <p>Je kunt het vergelijken met de <strong>abstract van een paper</strong>, maar dan zonder de resultaten; die voeg je op het einde toe.</p>
               <p>Je gebruikt hiervoor het sjabloon en de richtlijnen die in de <strong>stagekalender</strong> en op Blackboard staan.</p>
+              <p>Ter inspiratie kan je ook de <a href="https://pxl-digital.pxl.be/web/content/22811?unique=dc4fb90e5c244f5fb3d958ff2124cd6d03586314&amp;download=true" target="_blank" rel="noopener">projectenbundel van vorig jaar</a> bekijken, met uitgewerkte voorbeelden van projecten.</p>
             `
       }
     ]
