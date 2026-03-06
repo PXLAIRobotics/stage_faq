@@ -350,7 +350,7 @@ const FAQ_DATA = [
               <p>Elke <strong>vrijdag tussen 11–12u30</strong> hou ik een standaard open <strong>vragenuurtje via Teams call</strong>.</p>
               <ul>
                 <li>Wil je graag even syncen, plan dan op dat moment een korte meeting (20–30 minuten).</li>
-                <li>Boek bij voorkeur een slot via deze link: <a href="https://outlook.office.com/bookwithme/user/ef551706a0504d4780b8c58db20f5520@pxl.be/meetingtype/M93PszZqUUGektTOx-WXtw2?bookingcode=551e2ba2-54b0-4f3d-ad55-899d3855138a&amp;anonymous&amp;ismsaljsauthenabled&amp;ep=mlink" target="_blank" rel="noopener">boek een vragenuur‑meeting</a>.</li>
+                <li>Boek bij voorkeur een slot via deze link: <a href="https://outlook.office.com/bookwithme/user/ef551706a0504d4780b8c58db20f5520@pxl.be/meetingtype/M93PszZqUUGektTOx-WXtw2?bookingcode=bc35758f-3404-4252-b8af-2283ef951699&amp;anonymous&amp;ismsaljsauthenabled&amp;ep=mLinkFromTile" target="_blank" rel="noopener">boek een vragenuur‑meeting</a>.</li>
               </ul>
             `
       }
