@@ -67,6 +67,7 @@ const FAQ_DATA = [
               <p>In principe upload je je portfolio <strong>elke vrijdag</strong> op OnStage.</p>
               <ul>
                 <li>Ik lees het ten vroegste op maandag na, dus als het er <strong>tegen zondagavond</strong> op staat, is dat ook in orde.</li>
+                <li>Uiterlijk <strong>op vrijdag van de week erna</strong> heb ik je portfolio nagelezen en krijg je feedback (tenzij anders afgesproken).</li>
                 <li>Je kan dus een beetje schuiven, maar hou de wekelijkse cadans goed aan.</li>
               </ul>
             `
